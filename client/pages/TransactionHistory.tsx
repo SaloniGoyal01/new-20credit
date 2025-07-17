@@ -266,8 +266,8 @@ export default function TransactionHistory() {
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
+                  <XAxis dataKey="date" axisLine={true} tickLine={true} />
+                  <YAxis axisLine={true} tickLine={true} />
                   <Tooltip />
                   <Bar dataKey="transactions" fill="hsl(var(--primary))" />
                   <Bar dataKey="anomalies" fill="hsl(var(--destructive))" />
@@ -290,8 +290,8 @@ export default function TransactionHistory() {
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={anomalyTrendData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="time" />
-                  <YAxis />
+                  <XAxis dataKey="time" axisLine={true} tickLine={true} />
+                  <YAxis axisLine={true} tickLine={true} />
                   <Tooltip />
                   <Line
                     type="monotone"
