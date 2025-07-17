@@ -121,7 +121,18 @@ export default function Index() {
             lng: position.coords.longitude,
           });
         },
-        (error) => console.error("Geolocation error:", error),
+        (error) => {
+          console.warn(
+            "Geolocation access denied or unavailable:",
+            error.message,
+          );
+          // Continue without location - this is expected in many cases
+        },
+        {
+          timeout: 5000,
+          enableHighAccuracy: false,
+          maximumAge: 300000, // 5 minutes
+        },
       );
     }
   }, []);
