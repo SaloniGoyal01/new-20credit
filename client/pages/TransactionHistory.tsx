@@ -52,6 +52,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 
 interface Transaction {
@@ -142,6 +143,7 @@ export default function TransactionHistory() {
   const [filteredTransactions, setFilteredTransactions] =
     useState(mockTransactions);
   const { theme, setTheme } = useTheme();
+  const { user } = useAuth();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -226,9 +228,11 @@ export default function TransactionHistory() {
                 <Moon className="h-4 w-4" />
               )}
             </Button>
-            <Button variant="ghost" size="icon">
-              <User className="h-4 w-4" />
-            </Button>
+            <Link to="/settings">
+              <Button variant="ghost" size="icon">
+                <User className="h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
