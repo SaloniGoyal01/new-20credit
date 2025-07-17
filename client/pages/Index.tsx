@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 
 interface Transaction {
@@ -85,6 +86,7 @@ export default function Index() {
   } | null>(null);
   const recognitionRef = useRef<VoiceRecognition | null>(null);
   const { theme, setTheme } = useTheme();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     // Initialize speech recognition
@@ -261,7 +263,12 @@ export default function Index() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Shield className="h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold text-foreground">FraudGuard</h1>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">FraudGuard</h1>
+              <p className="text-sm text-muted-foreground">
+                Welcome back, {user?.name}
+              </p>
+            </div>
           </div>
 
           <nav className="hidden md:flex items-center space-x-6">
@@ -297,9 +304,11 @@ export default function Index() {
                 <Moon className="h-4 w-4" />
               )}
             </Button>
-            <Button variant="ghost" size="icon">
-              <User className="h-4 w-4" />
-            </Button>
+            <Link to="/settings">
+              <Button variant="ghost" size="icon">
+                <User className="h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
