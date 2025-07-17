@@ -210,6 +210,12 @@ export default function AdminDashboard() {
             >
               Admin Panel
             </Link>
+            <Link
+              to="/otp-demo"
+              className="text-muted-foreground hover:text-primary"
+            >
+              OTP Demo
+            </Link>
           </nav>
 
           <div className="flex items-center space-x-2">
