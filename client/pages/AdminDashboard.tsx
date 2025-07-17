@@ -329,8 +329,8 @@ export default function AdminDashboard() {
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={timelineData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="hour" />
-                  <YAxis />
+                  <XAxis dataKey="hour" axisLine={true} tickLine={true} />
+                  <YAxis axisLine={true} tickLine={true} />
                   <Tooltip />
                   <Bar dataKey="alerts" fill="hsl(var(--destructive))" />
                 </BarChart>
