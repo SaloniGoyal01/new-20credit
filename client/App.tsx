@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import Settings from "./pages/Settings";
+import OtpDemo from "./pages/OtpDemo";
 import AdminDashboard from "./pages/AdminDashboard";
 import TransactionHistory from "./pages/TransactionHistory";
 import NotFound from "./pages/NotFound";
@@ -64,6 +65,14 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <Settings />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/otp-demo"
+                element={
+                  <ProtectedRoute>
+                    <OtpDemo />
                   </ProtectedRoute>
                 }
               />
