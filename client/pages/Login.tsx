@@ -168,25 +168,39 @@ export default function Login() {
                   <strong>Password:</strong> demo123
                 </p>
               </div>
-              <div className="flex space-x-2">
+              <div className="space-y-2">
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="default"
                   size="sm"
-                  onClick={() => setEmail("demo@fraudguard.com")}
-                  className="flex-1"
+                  onClick={() => {
+                    setEmail("demo@fraudguard.com");
+                    setPassword("demo123");
+                  }}
+                  className="w-full bg-green-600 hover:bg-green-700"
                 >
-                  Fill Email
+                  🚀 Auto-Fill Demo Credentials
                 </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setPassword("demo123")}
-                  className="flex-1"
-                >
-                  Fill Password
-                </Button>
+                <div className="flex space-x-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setEmail("demo@fraudguard.com")}
+                    className="flex-1"
+                  >
+                    Fill Email
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPassword("demo123")}
+                    className="flex-1"
+                  >
+                    Fill Password
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>
