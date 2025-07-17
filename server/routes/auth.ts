@@ -23,6 +23,11 @@ const users: User[] = [
 // Simple token storage (use JWT and proper session management in production)
 const tokens: { [key: string]: string } = {};
 
+// OTP storage (use Redis or database in production)
+const otpStore: {
+  [key: string]: { otp: string; expires: number; userId: string };
+} = {};
+
 // Validation schemas
 const LoginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -385,6 +390,118 @@ export const logout: RequestHandler = (req, res) => {
     res.status(500).json({
       success: false,
       message: "Internal server error",
+    });
+  }
+};
+
+export const generateOtp: RequestHandler = (req, res) => {
+  try {
+    const currentUser = (req as any).user;
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpId = `otp_${Date.now()}_${currentUser.id}`;
+    const expires = Date.now() + 2 * 60 * 1000; // 2 minutes
+
+    // Store OTP
+    otpStore[otpId] = {
+      otp,
+      expires,
+      userId: currentUser.id,
+    };
+
+    // Mask email for security
+    const email = currentUser.email;
+    const [localPart, domain] = email.split("@");
+    const maskedEmail = `${localPart.charAt(0)}${"*".repeat(localPart.length - 2)}${localPart.charAt(localPart.length - 1)}@${domain}`;
+
+    // In production, send OTP via SMS/Email
+    console.log(`
+🔐 OTP Generated for ${currentUser.name} (${email}):
+
+OTP: ${otp}
+Valid for: 2 minutes
+Generated at: ${new Date().toLocaleTimeString()}
+
+Email would be sent to: ${email}
+SMS would be sent to: +**-****-***
+`);
+
+    res.json({
+      success: true,
+      message: "OTP generated successfully",
+      otpId,
+      maskedContact: maskedEmail,
+      expiresIn: 120, // seconds
+    });
+  } catch (error) {
+    console.error("Generate OTP error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to generate OTP",
+    });
+  }
+};
+
+export const verifyOtpEndpoint: RequestHandler = (req, res) => {
+  try {
+    const { otp } = req.body;
+    const currentUser = (req as any).user;
+
+    if (!otp) {
+      return res.status(400).json({
+        success: false,
+        message: "OTP is required",
+      });
+    }
+
+    // Find valid OTP for this user
+    const otpEntry = Object.entries(otpStore).find(
+      ([_, data]) =>
+        data.userId === currentUser.id &&
+        data.otp === otp &&
+        data.expires > Date.now(),
+    );
+
+    if (!otpEntry) {
+      // Check if OTP exists but expired
+      const expiredOtp = Object.entries(otpStore).find(
+        ([_, data]) => data.userId === currentUser.id && data.otp === otp,
+      );
+
+      if (expiredOtp) {
+        return res.status(400).json({
+          success: false,
+          message: "OTP has expired. Please generate a new one.",
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: "Invalid OTP. Please check and try again.",
+      });
+    }
+
+    // Remove used OTP
+    delete otpStore[otpEntry[0]];
+
+    // Clean up expired OTPs
+    Object.entries(otpStore).forEach(([id, data]) => {
+      if (data.expires <= Date.now()) {
+        delete otpStore[id];
+      }
+    });
+
+    res.json({
+      success: true,
+      message: "OTP verified successfully",
+      verifiedAt: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Verify OTP error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to verify OTP",
     });
   }
 };
