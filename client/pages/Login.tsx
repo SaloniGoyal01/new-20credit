@@ -155,15 +155,40 @@ export default function Login() {
         </Card>
 
         {/* Demo Credentials */}
-        <Card className="mt-4 bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+        <Card className="mt-4 bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
           <CardContent className="pt-4">
-            <p className="text-sm text-blue-700 dark:text-blue-300 text-center">
-              <strong>Demo Credentials:</strong>
-              <br />
-              Email: demo@fraudguard.com
-              <br />
-              Password: demo123
-            </p>
+            <div className="text-center space-y-3">
+              <p className="text-sm text-green-700 dark:text-green-300">
+                <strong>🎯 Use These Demo Credentials:</strong>
+              </p>
+              <div className="bg-white dark:bg-gray-800 p-3 rounded border border-green-300 dark:border-green-700">
+                <p className="text-sm font-mono text-gray-800 dark:text-gray-200">
+                  <strong>Email:</strong> demo@fraudguard.com
+                  <br />
+                  <strong>Password:</strong> demo123
+                </p>
+              </div>
+              <div className="flex space-x-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setEmail("demo@fraudguard.com")}
+                  className="flex-1"
+                >
+                  Fill Email
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPassword("demo123")}
+                  className="flex-1"
+                >
+                  Fill Password
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
