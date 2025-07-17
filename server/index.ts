@@ -17,6 +17,8 @@ import {
   updateProfile,
   changePassword,
   logout,
+  generateOtp,
+  verifyOtpEndpoint,
   authenticateToken,
 } from "./routes/auth";
 
@@ -43,6 +45,10 @@ export function createServer() {
   app.put("/api/auth/update-profile", authenticateToken, updateProfile);
   app.put("/api/auth/change-password", authenticateToken, changePassword);
   app.post("/api/auth/logout", authenticateToken, logout);
+
+  // OTP API routes
+  app.post("/api/auth/generate-otp", authenticateToken, generateOtp);
+  app.post("/api/auth/verify-otp", authenticateToken, verifyOtpEndpoint);
 
   // Fraud Detection API routes (protected)
   app.post("/api/fraud/analyze", authenticateToken, analyzeTransaction);
