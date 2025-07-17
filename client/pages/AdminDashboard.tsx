@@ -52,6 +52,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 
 interface FlaggedTransaction {
@@ -136,6 +137,7 @@ export default function AdminDashboard() {
   const [selectedTransaction, setSelectedTransaction] =
     useState<FlaggedTransaction | null>(null);
   const { theme, setTheme } = useTheme();
+  const { user } = useAuth();
 
   const getRiskColor = (level: string) => {
     switch (level) {
@@ -225,9 +227,11 @@ export default function AdminDashboard() {
                 <Moon className="h-4 w-4" />
               )}
             </Button>
-            <Button variant="ghost" size="icon">
-              <User className="h-4 w-4" />
-            </Button>
+            <Link to="/settings">
+              <Button variant="ghost" size="icon">
+                <User className="h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
